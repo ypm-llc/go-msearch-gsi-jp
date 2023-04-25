@@ -1,3 +1,7 @@
+/*
+msearch is a package for searching address by query and reverse geocode by latitude and longitude using msearch APIs that presented by Geospatial Information Authority of Japan.
+
+*/
 package msearch
 
 import (
@@ -34,6 +38,7 @@ func processBodyByRequest(req *rq.Rq) ([]byte, error) {
 	return ioutil.ReadAll(res.Body)
 }
 
+// search address by query
 func SearchAddress(q string) ([]*types.Feature, error) {
 	req := buildRequest("https://msearch.gsi.go.jp/address-search/AddressSearch", map[string][]string{"q": {q}})
 
@@ -51,6 +56,7 @@ func SearchAddress(q string) ([]*types.Feature, error) {
 	return resData, nil
 }
 
+// search address that contains query string
 func ContainsSearchAddress(q string) ([]*types.Feature, error) {
 	features, err := SearchAddress(q)
 	if err != nil {
@@ -68,6 +74,7 @@ func ContainsSearchAddress(q string) ([]*types.Feature, error) {
 	return res, nil
 }
 
+// reverse geocode by latitude and longitude
 func ReverseGeocode(lat float64, lon float64) (*types.Address, error) {
 	req := buildRequest("https://mreversegeocoder.gsi.go.jp/reverse-geocoder/LonLatToAddress", map[string][]string{"lat": {fmt.Sprintf("%v", lat)}, "lon": {fmt.Sprintf("%v", lon)}})
 
