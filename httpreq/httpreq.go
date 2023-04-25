@@ -1,3 +1,6 @@
+/*
+a package for build and process http request
+*/
 package httpreq
 
 import (

@@ -1,5 +1,5 @@
 /*
-msearch is a package for searching address by query string.
+a package for searching address by query string
 */
 package msearch
 

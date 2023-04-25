@@ -1,5 +1,5 @@
 /*
-mreversegeocode is a package for reverse geocoding by latitude and longitude.
+a package for reverse geocoding by latitude and longitude
 */
 package mreversegeocode
 
@@ -8,11 +8,14 @@ import (
 	"fmt"
 
 	"github.com/ypm-llc/go-msearch-gsi-jp/httpreq"
+	"github.com/ypm-llc/go-msearch-gsi-jp/muni"
 	"github.com/ypm-llc/go-msearch-gsi-jp/types"
 )
 
 // base url for mreversegeocode api
 const BaseURL = "https://mreversegeocoder.gsi.go.jp"
+
+var MuniMap types.MuniMap
 
 // reverse geocoding by latitude and longitude
 func LatLonToAddress(lat float64, lon float64) (*types.Address, error) {
@@ -32,4 +35,27 @@ func LatLonToAddress(lat float64, lon float64) (*types.Address, error) {
 	}
 
 	return resData, nil
+}
+
+// converts address result to address name
+func LatLonToAddressName(lat float64, lon float64) (string, error) {
+	addr, err := LatLonToAddress(lat, lon)
+	if err != nil {
+		return "", err
+	}
+	if addr.Results == nil {
+		return "", fmt.Errorf("no address found")
+	}
+
+	if MuniMap == nil {
+		updateMuniMap()
+	}
+
+	return muni.AddressResultsToAddressName(MuniMap, addr.Results)
+}
+
+func updateMuniMap() error {
+	var err error
+	MuniMap, err = muni.GetMuniMap()
+	return err
 }

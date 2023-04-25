@@ -1,3 +1,6 @@
+/*
+a package for types about msearch / mreversegeocode and related packages
+*/
 package types
 
 // Geometry value of GeoJSON
@@ -30,3 +33,14 @@ type AddressResults struct {
 type Address struct {
 	Results *AddressResults `json:"results"`
 }
+
+// muni record (city or ward record)
+type MuniRecord struct {
+	PrefCode int    `json:"prefCode"`
+	PrefName string `json:"prefName"`
+	CityCode int    `json:"cityCode"`
+	CityName string `json:"cityName"`
+}
+
+// muni map (city or ward map by city code)
+type MuniMap map[int]*MuniRecord
